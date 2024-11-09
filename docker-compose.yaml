@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  server:
+    container_name: server
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - 8000:8000
+    env_file: .env.local
+    depends_on:
+      postgres:
+        condition: service_healthy
+  postgres:
+    container_name: postgres
+    restart: always
+    image: postgres:16
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    network_mode: host
+    env_file: .env.local
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U insidegrid -d insidegrid"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    logging:
+      options:
+        max-size: "1G"
+        max-file: "1"
+#volumes:
+#  pg_data:
+#    driver: local
+#    driver_opts:
+#      o: bind
+#      type: none
+#      device: ./postgresql-data
+secrets:
+  insidegrid-secret:
+    file: ./.env.local
