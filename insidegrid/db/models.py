@@ -77,15 +77,6 @@ class DislikedReleases(Base):
     user_id = Column(ForeignKey(Users.id))
     release_id = Column(ForeignKey(Releases.id))
 
-class History(Base):
-    __tablename__ = "history"
-
-    id = Column('id', Integer, primary_key=True, autoincrement=True)
-    author_id = Column(ForeignKey(Users.id))
-    date = Column('date', DateTime, nullable=False)
-    change_id = Column(ForeignKey(Changes.id), nullable=True)
-    difference = Column('difference', JSON, nullable=False)
-
 class Comments(Base):
     __tablename__ = "comments"
 
@@ -93,6 +84,7 @@ class Comments(Base):
     change_id = Column(ForeignKey(Changes.id), nullable=True)
     release_id = Column(ForeignKey(Releases.id), nullable=True)
     author_id = Column(ForeignKey(Users.id))
+    content = Column('content', Text, nullable=False)
     date = Column('date', DateTime, nullable=False)
     replied_to_comment_id = Column(ForeignKey('comments.id'), nullable=True)
     likes = Column('likes', Integer, nullable=False, default=0)

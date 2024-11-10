@@ -131,30 +131,19 @@ class HistoryInputSchema(BaseModel):
     change_id: Optional[int] = None
     difference: dict
 
-class HistoryOutputSchema(BaseModel):
-    id: int
-    author_id: int
-    date: datetime
-    change_id: Optional[int]
-    difference: dict
-
-    class Config:
-        orm_mode = True
-
 class CommentInputSchema(BaseModel):
     change_id: Optional[int] = None
     release_id: Optional[int] = None
     author_id: int
     date: datetime
     replied_to_comment_id: Optional[int] = None
-    likes: Optional[int] = 0
-    dislikes: Optional[int] = 0
 
 class CommentOutputSchema(BaseModel):
     id: int
     change_id: Optional[int]
     release_id: Optional[int]
     author_id: int
+    content: str
     date: datetime
     replied_to_comment_id: Optional[int]
     likes: int

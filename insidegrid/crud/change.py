@@ -1,4 +1,3 @@
-from http.client import HTTPException
 
 from sqlalchemy.orm import Session
 from starlette import status
@@ -11,10 +10,6 @@ def get_changes(session: Session) -> list[models.Changes]:
     return session.query(models.Changes).filter().all()
 
 def create_change(session: Session, change: ChangeInputSchema) -> models.Changes:
-    # user_id = session.headers.get("X-User-ID")
-    # if not user_id:
-    #     raise HTTPException(status_code=401, detail="User not logged in")
-
     change_model = models.Changes(
         status=change.status,
         name=change.name,
@@ -106,5 +101,3 @@ def subscribe_to_change(session: Session, user_id: int, change_id: int):
     session.commit()
     session.refresh(new_subscription)
     return {"message": "Successfully subscribed to the change"}
-
-# def update_change(session: Session, change_id: int)
