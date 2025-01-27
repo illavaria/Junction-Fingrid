@@ -13,7 +13,7 @@ def create_change(session: Session, change: ChangeInputSchema) -> models.Changes
     change_model = models.Changes(
         status=change.status,
         name=change.name,
-        creator_user_id=change.user_id,
+        creator_user_id=change.creator_user_id,
         description=change.description,
         parent_id=change.parent_id,
         tags=change.tags,
