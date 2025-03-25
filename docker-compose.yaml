@@ -1,42 +1,32 @@
 version: '3.8'
 
 services:
-  server:
-    container_name: server
+  db:
+    container_name: postgres
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: user1
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: insidegrid
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
     build:
       dockerfile: Dockerfile
       context: .
-    ports:
-      - 8000:8000
-    env_file: .env.local
-    depends_on:
-      postgres:
-        condition: service_healthy
-  postgres:
-    container_name: postgres
+    container_name: insidegrid_app
     restart: always
-    image: postgres:16
-    volumes:
-      - ./pg_data:/var/lib/postgresql/data
-    network_mode: host
-    env_file: .env.local
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U insidegrid -d insidegrid"]
-      interval: 10s
-      retries: 5
-      start_period: 30s
-      timeout: 10s
-    logging:
-      options:
-        max-size: "1G"
-        max-file: "1"
-#volumes:
-#  pg_data:
-#    driver: local
-#    driver_opts:
-#      o: bind
-#      type: none
-#      device: ./postgresql-data
-secrets:
-  insidegrid-secret:
-    file: ./.env.local
+    depends_on:
+      - db
+    env_file:
+      - .env.docker
+    ports:
+      - "8000:80"
+    command: ["/bin/sh", "-c", "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 80"]
+
+volumes:
+  postgres_data:

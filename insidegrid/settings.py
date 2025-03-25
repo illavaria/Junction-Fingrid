@@ -10,8 +10,7 @@ class Settings(BaseSettings):
     POSTGRES_HOST: str
     POSTGRES_PORT: int
     POSTGRES_URL: str = ''  # noqa: value is set auto
-    ROOT_FOLDER_ID: str
-    TEMPLATES_DIRECTORY: str = 'templates'
+
 
     @model_validator(mode='after')
     def build_auto_values(self, data):
@@ -25,4 +24,4 @@ class Settings(BaseSettings):
         )
 
 
-settings = Settings(_env_file=['../.env.local', '../.env'])
+settings = Settings(_env_file=['.env.docker', '.env'])

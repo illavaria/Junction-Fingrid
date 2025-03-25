@@ -1,15 +1,15 @@
-
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
+from insidegrid.db.models import *
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-SQLALCHEMY_DATABASE_URL = 'postgresql://user1:1234@localhost/insidegrid'
+SQLALCHEMY_DATABASE_URL = 'postgresql://user1:1234@db:5432/insidegrid'
 config.set_main_option("sqlalchemy.url", SQLALCHEMY_DATABASE_URL)
 
 
@@ -20,7 +20,7 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from insidegrid.db import Base
+# from insidegrid.db import Base
 target_metadata = Base.metadata
 # target_metadata = None
 
