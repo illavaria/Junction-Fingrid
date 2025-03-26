@@ -10,4 +10,4 @@ COPY . /app
 
 EXPOSE 8000
 ENV PYTHONPATH=insidegrid
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
